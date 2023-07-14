@@ -6,7 +6,7 @@ Metaschema in, documentation out.
 
 The scripts are written in `bash` and rely on [Apache Maven](https://maven.apache.org/) for Java dependency management.
 
-### `mvn-schemadocs-html-xpl.sh`
+### `mvn-schemadocs-testsite-xpl.sh`
 
 Produces a set of interlinked HTML files documenting the models (XML and object/JSON) for a metaschema, in a subdirectory.
 
@@ -29,18 +29,32 @@ The result file names are defined in the underlying XProc, `METASCHEMA-HTML-DOCS
 
 This script invokes the base 'traceable' XProc, `METASCHEMA-DOCS-TRACE.xpl`. By managing exposed ports (now binding to `/dev/null` for intermediate results and file paths for HTML results) through this script, intermediate and final outputs can be examined and assessed. Use for debugging.
 
+As set up, this script writes outputs similarly to `mvn-schemadocs-testsite-xpl.sh`, except without hardcoding file names and writing to a path.
+
 ## Pipelines
 
-### `METASCHEMA-HTML-DOCS.xpl`
+All these pipelines have a primary input source port named `METASCHEMA`, which should be provided with a valid metaschema whose imports are resolvable and valid.
 
-This 'wrapper' pipeline includes the base pipeline `METASCHEMA-DOCS-TRACE.xpl` as a defined step, and invokes it with metaschema input while configuring its runtime. Consequently it is much simpler to run.
+### `METASCHEMA-DOCS-DIVS-write.xpl`
 
-Use this pipeline with metaschema input when you want HTML file results written to a specific location by the XProc.
+Given a `path` to write to and a key name (schema name), this pipeline serializes and writes a set of documentation rooted at HTML `div` elements, suitable for ingestion into Hugo or any other HTML-based publishing system.
+
+NB: Markdown can be acquired for docs by reducing this HTML to Markdown. Make inquiries if this is of use.
+
+### `METASCHEMA-DOCS-DIVS.xpl`
+
+For ease of configurability, this pipeline works like `METASCHEMA-DOCS-TESTSITE-write.xpl` except Given a `path` to write to and a key name (schema name), this pipeline serializes and writes a set of documentation rooted at HTML `div` elements, suitable for ingestion into Hugo or any other HTML-based publishing system.
+
+NB: Markdown can be acquired for docs by reducing this HTML to Markdown. Make inquiries if this is of use.
+
+### `METASCHEMA-DOCS-TESTSITE-write.xpl`
+
+Just like `METASCHEMA-DOCS-DIVS.xpl`, except this pipeline writes HTML files into a path provided at runtime.
+
+Use this pipeline to produce a set of standalone documentation ready to preview and use.
+
+Both these pipelines include the base pipeline `METASCHEMA-DOCS-TRACE.xpl` as a defined step, and invoke it with metaschema input while configuring its runtime.
 
 ### `METASCHEMA-DOCS-TRACE.xpl`
 
 The base pipeline called by the HTML rendering pipeline, exposing ports for debugging,
-
-TO DO: extend this to support a new pipeline optimizing for Hugo - means showing new ports exposing HTML results before they are wrapped. This can replace the current Hugo-writing pipeline.
-
-Text
