@@ -5,7 +5,8 @@
    type="metaschema:CHOICES-MAKE-JSON"
    name="CHOICES-MAKE-JSON"
    xmlns:x="http://www.jenitennison.com/xslt/xspec"
-   xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:nm="http://csrc.nist.gov/ns/metaschema"
+   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+   xmlns:nm="http://csrc.nist.gov/ns/metaschema"
    xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
    <!-- Input: Static files named herein (expect errors for files broken or missing)-->
@@ -44,8 +45,6 @@
       <!--<p:document href="choices-invalid/colors07.xml"/>-->
       <p:document href="choices-invalid/colors08.xml"/>
    </p:input>
-
-   
    
    <p:for-each>
       <p:iteration-source>

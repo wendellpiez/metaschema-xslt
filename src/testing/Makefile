@@ -13,8 +13,8 @@ include ./make_common.mk
 
 module_path:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 output_folder:=$(module_path)/test_output
-xspec_script=$(realpath $(module_path)/../../../support/xspec-dev/mvn-saxon-xspec-batch-quiet.sh)
-xspec_ci_script=$(realpath $(module_path)/../../../support/xspec-dev/mvn-saxon-xspec-batch.sh)
+xspec_script=$(realpath $(module_path)/../../../support/xslt3-functions/xspec-dev/mvn-saxon-xspec-batch-quiet.sh)
+xspec_ci_script=$(realpath $(module_path)/../../../support/xslt3-functions/xspec-dev/mvn-saxon-xspec-batch.sh)
 metaschema_validate_xsd_script=$(realpath $(module_path)/../validate/mvn-metaschema-xsd-validate-xpl.sh)
 metaschema_validate_schematron_script=$(realpath $(module_path)/../validate/mvn-composition-validate-xpl.sh)
 

@@ -47,7 +47,7 @@
          "description": "A grouping.",
          "$id": "#/definitions/choices-choices:group",
          "type": "object",
-         "oneOf": [
+         "anyOf": [
             {
                "properties": {
                   "family": {
@@ -99,7 +99,7 @@
          "description": "A blue color.",
          "$id": "#/definitions/choices-choices:blue",
          "type": "object",
-         "oneOf": [
+         "anyOf": [
             {
                "properties": {
                   "aquamarine": {
@@ -109,29 +109,32 @@
                      "additionalProperties": false
                   }
                },
-               "additionalProperties": false
+               "additionalProperties": false,
+               "minProperties": 1
             },
             {
                "properties": {
-                  "aquamarine": {
+                  "midnight": {
                      "title": "Midnight",
                      "description": "Calmly resting.",
                      "type": "object",
                      "additionalProperties": false
                   }
                },
-               "additionalProperties": false
+               "additionalProperties": false,
+               "minProperties": 1
             },
             {
                "properties": {
-                  "aquamarine": {
+                  "lapis": {
                      "title": "Lapis",
                      "description": "In repose.",
                      "type": "object",
                      "additionalProperties": false
                   }
                },
-               "additionalProperties": false
+               "additionalProperties": false,
+               "minProperties": 1
             }
          ]
       },
@@ -140,7 +143,7 @@
          "description": "A red color.",
          "$id": "#/definitions/choices-choices:red",
          "type": "object",
-         "oneOf": [
+         "anyOf": [
             {
                "properties": {
                   "firetruck": {
@@ -149,7 +152,9 @@
                      "type": "object",
                      "additionalProperties": false
                   }
-               }
+               },
+               "additionalProperties": false,
+               "minProperties": 1
             },
             {
                "properties": {
@@ -159,7 +164,9 @@
                      "type": "object",
                      "additionalProperties": false
                   }
-               }
+               },
+               "additionalProperties": false,
+               "minProperties": 1
             },
             {
                "properties": {
@@ -169,10 +176,11 @@
                      "type": "object",
                      "additionalProperties": false
                   }
-               }
+               },
+               "additionalProperties": false,
+               "minProperties": 1
             }
-         ],
-         "additionalProperties": false
+         ]
       },
       "StringDatatype": {
          "description": "A non-empty string with leading and trailing whitespace disallowed. Whitespace is: U+9, U+10, U+32 or [ \n\t]+",

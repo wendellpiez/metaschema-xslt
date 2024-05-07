@@ -31,13 +31,12 @@
       <finding href="{@href}">VALIDATION ANOMALY: a document collected as 'invalid' is found to be VALID</finding>
    </xsl:template>
    
-   <xsl:template match="document[@VALIDATION-STATUS='XSD-INVALID']" priority="3">
+   <xsl:template match="document[@VALIDATION-STATUS='JSON-SCHEMA-INVALID']" priority="3">
       <finding href="{@href}">CONFIRMED (invalid)</finding>
    </xsl:template>
    
    <xsl:template match="document">
       <finding href="{@href}">CONFIRMED (valid)</finding>
    </xsl:template>
-   
      
 </xsl:stylesheet>

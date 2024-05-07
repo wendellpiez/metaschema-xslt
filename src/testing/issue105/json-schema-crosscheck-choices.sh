@@ -25,7 +25,7 @@ ADDITIONAL_ARGS=$(echo "${*// /\\ }")
 
 CALL_MORGANA=../../../support/lib/MorganaXProc-IIIse-1.3.6/Morgana.sh
 
-PIPELINE3=JSON-VALIDATE-CHOICES.xp3
+PIPELINE3=jsonv7-validate/JSON-VALIDATE-CHOICES.xp3
 
 MORGANA_ARGS="$PIPELINE3 -xslt-connector=saxon12-3 $ADDITIONAL_ARGS"
 

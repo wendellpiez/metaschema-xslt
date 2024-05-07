@@ -12,8 +12,8 @@
       <blue>
          <aquamarine/>
       </blue>
-      <redX><?EXPECT ERROR?> <!-- 'red' element is an alternative to 'blue', inside 'choice' -->
+      <red><?EXPECT ERROR?> <!-- 'red' element is an alternative to 'blue', inside 'choice' -->
          <firetruck/>
-      </redX>
+      </red>
    </group>
 </CHOICES>

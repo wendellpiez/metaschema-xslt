@@ -5,18 +5,14 @@
    xmlns:xvrl="http://www.xproc.org/ns/xvrl"
    xmlns:nm="http://csrc.nist.gov/ns/metaschema"
    exclude-result-prefixes="xs math"
-    expand-text="true"
+   expand-text="true"
    version="3.0">
    
-   <xsl:mode on-no-match="shallow-copy"/>
-   
-   <xsl:output method="text"/>
+   <xsl:mode on-no-match="text-only-copy"/>
    
    <xsl:template match="/*">
-      <xsl:copy>
          <xsl:apply-templates/>
          <xsl:text>&#xA;{ (1 to 12) ! ':::::' }</xsl:text>
-      </xsl:copy>
    </xsl:template>
    
    <xsl:template match="REPORT/*">
