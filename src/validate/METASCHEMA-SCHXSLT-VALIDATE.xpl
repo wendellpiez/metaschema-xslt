@@ -5,8 +5,6 @@
   xmlns:schxslt="https://doi.org/10.5281/zenodo.1495494"
   type="metaschema:METASCHEMA-SCHXSLT-VALIDATE" name="METASCHEMA-SCHXSLT-VALIDATE">
   
-  <p:import href="../../support/schxslt/core/src/main/resources/xproc/1.0/validate-with-schematron.xpl"/>
-  
   <!-- &&& &&& &&& &&& &&& &&& &&& &&& &&& &&& &&& &&& &&& &&& &&& &&& &&& &&& -->
   <!-- Ports -->
   
@@ -28,6 +26,8 @@
     <p:pipe port="result" step="plaintext-report"/>
   </p:output>
   
+  <p:import href="../../support/schxslt/core/src/main/resources/xproc/1.0/validate-with-schematron.xpl"/> 
+   
   <p:identity name="echo-input"/>
 
   <schxslt:validate-with-schematron name="schematron-check">

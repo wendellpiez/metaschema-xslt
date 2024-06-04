@@ -2,10 +2,17 @@
 <?xml-model href="../../../../../testing/xspec-assurance.sch"?>
 <?xml-model href="../../../../../util/xspec-fixup.sch"?>
 <x:description xmlns:mx="http://csrc.nist.gov/ns/csd/metaschema-xslt"
-   xmlns="http://example.com/ns/computer"
-   xmlns:x="http://www.jenitennison.com/xslt/xspec" xmlns:xs="http://www.w3.org/2001/XMLSchema"
-   stylesheet="../../../make-json-schema-metamap.xsl" xslt-version="3.0">
+   xmlns:m="http://csrc.nist.gov/ns/oscal/metaschema/1.0"
+   xmlns="http://csrc.nist.gov/ns/metaschema-xslt/tinydata"
+   xmlns:t="http://csrc.nist.gov/ns/metaschema-xslt/tinydata"
+   xmlns:x="http://www.jenitennison.com/xslt/xspec"
+   xmlns:xs="http://www.w3.org/2001/XMLSchema"
+   xmlns:fn="http://www.w3.org/2005/xpath-functions"
+   stylesheet="../../../make-json-schema-metamap.xsl"
+   xslt-version="3.0" run-as="external">
 
+   <x:helper stylesheet="../../../../../common/metaschema-ws-strip.xsl"/>
+   
    <!--<x:variable name="mx:makes-a-date" as="function(*)"
       select="function($v as item()) as xs:boolean { $v castable as xs:date }"/>-->
 
@@ -21,4 +28,24 @@
       </x:scenario>
    </x:scenario>
    
+<!-- Tests following use as input the testing metaschema ../../../../../testing/tinydata/tiny_metaschema.xml
+   with static artifacts produced for the directory `current` in that folder
+   
+   refresh these artifacts with the script ../../../../../testing/tinydata/refresh-tiny-schemas.sh
+   -->
+   
+   <!--
+   <map xmlns="http://www.w3.org/2005/xpath-functions"
+      xmlns:nm="http://csrc.nist.gov/ns/metaschema"
+      key="tiny-tiny:sheet">
+      -->
+   
+   <x:scenario label="[B] modeling choice - issue 105">
+      <x:variable name="mx:tiny-composed"    href="../../../../../testing/tinydata/current/tiny_COMPOSED.xml"/>
+      <x:variable name="mx:corrected-schema" href="../../../../../testing/tinydata/tiny_json-schema-corrected.xml"/>
+      <x:scenario label="An assembly from the JSON Schema produced from the Tiny model, containing 'choice'">
+         <x:context select="$mx:tiny-composed/*/m:define-assembly[@name='sheet']"/>
+         <x:expect label="Looks like it does in the handmade target model" test="mx:scrub-up($x:result)" select="$mx:corrected-schema/descendant::fn:map[@key='tiny-tiny:sheet'] => mx:scrub-up()"/>
+      </x:scenario>
+   </x:scenario>
 </x:description>

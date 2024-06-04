@@ -146,7 +146,7 @@
         </map>
     </xsl:template>
     
-    <xsl:template match="define-assembly">
+    <xsl:template match="define-assembly" mode="old">
         <xsl:apply-templates select="formal-name, description"/>
         <xsl:call-template name="give-id"/>
         <string key="type">object</string>
@@ -156,7 +156,68 @@
             </map>
         </xsl:where-populated>
         <xsl:call-template name="require-or-allow"/>
-    </xsl:template>
+       
+       <!--split out model into newmodels (sans choice)
+       if count(newmodels) gt 1 then anyOf / for-each / map
+       if count(newmodels eq 0 then map with properties-->
+       
+       
+   </xsl:template>
+   
+   <xsl:import href="choice-split.xsl"/>
+   
+   <xsl:template match="define-assembly">
+      <xsl:variable name="flags-here" select="flag | define-flag"/>
+      <xsl:variable name="my-model" select="model"/>
+      
+      <xsl:apply-templates select="formal-name, description"/>
+      <xsl:call-template name="give-id"/>
+      <string key="type">object</string>
+      
+      <xsl:variable name="split-models" as="element(model)*">
+         <xsl:apply-templates select="model" mode="splitting"/>
+      </xsl:variable>
+      <xsl:choose>
+         <xsl:when test="count($split-models) gt 1">
+            <array key="anyOf">
+               <xsl:for-each select="$split-models">
+                  <map>
+                     <map key="properties">
+                        <xsl:apply-templates mode="define" select="$flags-here"/>
+                        <xsl:apply-templates mode="define" select="."/>
+                     </map>
+                     <xsl:call-template name="require-or-allow">
+                        <xsl:with-param name="with-model" select="."/>
+                     </xsl:call-template>
+                  </map>
+               </xsl:for-each>
+            </array>
+         </xsl:when>
+         <xsl:when test="count($split-models) eq 1">
+            <map key="properties">
+               <xsl:apply-templates mode="define" select="$flags-here"/>
+               <xsl:apply-templates mode="define" select="$my-model"/>
+            </map>
+            <xsl:call-template name="require-or-allow"/>
+            
+         </xsl:when>
+         <xsl:otherwise>
+            <xsl:call-template name="require-or-allow"/>
+         </xsl:otherwise>
+      </xsl:choose>
+      
+      
+      
+      <!--<xsl:apply-templates mode="define" select="$flags-here"/>
+       <xsl:apply-templates mode="define" select="."/>
+       <xsl:apply-templates mode="define" select="$flags-here"/>
+       
+       model -> flatmodel+
+       for each flatmodel
+       do xsl:apply-templates mode="define" select="flag | define-flag | model"/>-->
+   </xsl:template>
+   
+   
     
     <xsl:template match="define-field">
             <xsl:apply-templates select="formal-name, description"/>
@@ -167,6 +228,7 @@
                     <xsl:apply-templates select="." mode="properties"/>
                 </map>
             </xsl:where-populated>
+         
             <xsl:call-template name="require-or-allow"/>
     </xsl:template>
     
@@ -281,6 +343,8 @@
     </xsl:template>
     
     <xsl:template name="require-or-allow">
+<!-- $with-model allows a proxy 'model' when choices are split out      -->
+       <xsl:param name="with-model" select="child::model"/>
         <xsl:variable name="requirements" as="element()*">
             <!-- A value string is always required except on empty fields -->
             <xsl:variable name="value-property">
@@ -296,7 +360,7 @@
             <xsl:apply-templates mode="property-name"
                 select="flag[@required = 'yes'][not(@ref = $implicit-flags)] |
                         define-flag[@required = 'yes'][not(@name = $implicit-flags)] |
-                        model/(field|define-field|assembly|define-assembly)[@min-occurs &gt; 0]"/>
+                        $with-model/(field|define-field|assembly|define-assembly)[@min-occurs &gt; 0]"/>
         </xsl:variable> 
         <xsl:if test="exists( $requirements )">
             <array key="required">
@@ -305,7 +369,7 @@
         </xsl:if>
         <boolean key="additionalProperties">
             <xsl:choose>
-                <xsl:when test="exists(json-value-key-flag | model/(.|choice)/any)">true</xsl:when>
+                <xsl:when test="exists(json-value-key-flag | $with-model/(.|choice)/any)">true</xsl:when>
                 <xsl:otherwise>false</xsl:otherwise>
             </xsl:choose>
         </boolean>
@@ -425,8 +489,8 @@
     <xsl:template mode="define" priority="5"
         match="define-assembly[group-as/@in-json='BY_KEY'][exists(json-key)] |
         define-field[group-as/@in-json='BY_KEY'][exists(json-key)] |
-        assembly[group-as/@in-json='BY_KEY'][exists(key('assembly-definition-by-name',@_key-ref)/json-key)] |
-        field[group-as/@in-json='BY_KEY'][exists(key('field-definition-by-name',@_key-ref)/json-key)]">
+        assembly[group-as/@in-json='BY_KEY'][exists(key('assembly-definition-by-name',@_key-ref, $composed-metaschema)/json-key)] |
+        field[group-as/@in-json='BY_KEY'][exists(key('field-definition-by-name', @_key-ref, $composed-metaschema)/json-key)]">
         <xsl:variable name="group-name" select="group-as/@name"/>
         <map key="{ $group-name }">
             <string key="type">object</string>
@@ -444,7 +508,7 @@
     <!-- Always a map when max-occurs is 1 or implicit -->
     <xsl:template mode="define" priority="4"
         match="assembly[empty(@max-occurs) or number(@max-occurs) = 1] | define-assembly[empty(@max-occurs) or number(@max-occurs) = 1]">
-        <xsl:variable name="decl" select="key('assembly-definition-by-name', @_key-ref) | self::define-assembly"/>
+        <xsl:variable name="decl" select="key('assembly-definition-by-name', @_key-ref, $composed-metaschema) | self::define-assembly"/>
         <map key="{ (use-name,$decl/use-name,$decl/@name)[1] }">
             <xsl:apply-templates select="." mode="definition-or-reference"/>
         </map>
@@ -453,7 +517,7 @@
     <!-- Always a map when max-occurs is 1 or implicit -->
     <xsl:template mode="define" priority="4"
         match="field[empty(@max-occurs) or number(@max-occurs) = 1] | define-field[empty(@max-occurs) or number(@max-occurs) = 1]">
-        <xsl:variable name="decl" select="key('field-definition-by-name', @_key-ref) | self::define-field"/>
+       <xsl:variable name="decl" select="key('field-definition-by-name', @_key-ref, $composed-metaschema) | self::define-field"/>
         <map key="{ (use-name,$decl/use-name,$decl/@name)[1] }">
             <xsl:apply-templates select="." mode="definition-or-reference"/>
         </map>
@@ -509,17 +573,17 @@
     </xsl:template>
     
     <xsl:template match="flag" mode="definition-or-reference">
-        <xsl:variable name="definition" select="key('flag-definition-by-name',@_key-ref)"/>
+        <xsl:variable name="definition" select="key('flag-definition-by-name', @_key-ref, $composed-metaschema)"/>
         <xsl:apply-templates select="$definition" mode="make-ref"/>
     </xsl:template>
     
     <xsl:template match="field" mode="definition-or-reference">
-        <xsl:variable name="definition" select="key('field-definition-by-name',@_key-ref)"/>
+       <xsl:variable name="definition" select="key('field-definition-by-name', @_key-ref, $composed-metaschema)"/>
         <xsl:apply-templates select="$definition" mode="make-ref"/>
     </xsl:template>
     
     <xsl:template match="assembly" mode="definition-or-reference">
-        <xsl:variable name="definition" select="key('assembly-definition-by-name',@_key-ref)"/>
+       <xsl:variable name="definition" select="key('assembly-definition-by-name', @_key-ref, $composed-metaschema)"/>
         <xsl:apply-templates select="$definition" mode="make-ref"/>
     </xsl:template>
     
@@ -550,8 +614,8 @@
             <xsl:when test="exists(@as-type)">
                 <xsl:next-match/>
             </xsl:when>
-            <xsl:when test="exists(key('field-definition-by-name',@_key-ref)/@as-type)">
-                <xsl:apply-templates mode="#current" select="key('field-definition-by-name',@_key-ref)"/>
+            <xsl:when test="exists(key('field-definition-by-name',@_key-ref, $composed-metaschema)/@as-type)">
+                <xsl:apply-templates mode="#current" select="key('field-definition-by-name',@_key-ref, $composed-metaschema)"/>
             </xsl:when>
             <xsl:otherwise>
                 <string key="type">string</string> 

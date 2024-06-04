@@ -22,7 +22,7 @@ test: unit-test spec-test ## Run all tests
 
 .PHONY: spec-test
 spec-test: ## Run all specification tests
-	LOGFILE="$(output_folder)/inspector-functional-tests.log" $(xspec_ci_script) \
+	LOGFILE="$(output_folder)/jsonschemagen-mapping.log" $(xspec_ci_script) \
 		"folder=$(module_path)/testing/tests/jsonschemagen-mapping-xspec/" \
 		"report-to=$(output_folder)/jsonschemagen-mapping_report.html" \
 		"junit-to=$(output_folder)/jsonschemagen-mapping_junit-report.xml" \
@@ -31,7 +31,7 @@ spec-test: ## Run all specification tests
 
 .PHONY: unit-test
 unit-test: ## Run all unit tests
-	LOGFILE="$(output_folder)/inspector-generation-tests.log" $(xspec_ci_script) \
+	LOGFILE="$(output_folder)/jsonschemagen-runtime.log" $(xspec_ci_script) \
 		"folder=$(module_path)/testing/tests/jsonschemagen-runtime-xspec" \
 		"report-to=$(output_folder)/jsonschemagen-runtime_report.html" \
 		"junit-to=$(output_folder)/jsonschemagen-runtime_junit-report.xml" \

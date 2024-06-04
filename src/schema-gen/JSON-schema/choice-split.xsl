@@ -10,7 +10,7 @@
     <!-- Purpose: Provide splitting logic for choices, rendering a model sequence containing choices as a choice of model sequences. -->
         
     <!-- Note: this XSLT will only be used on its own for development and debugging.
-        It is however imported by `produce-json-converter.xsl` and possibly other stylesheets. -->
+        It is however imported by `make-json-schema-metamap.xsl` and possibly other stylesheets. -->
    
    <xsl:strip-space elements="*"/>
    
