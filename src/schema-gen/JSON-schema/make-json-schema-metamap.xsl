@@ -145,7 +145,10 @@
             <xsl:next-match/>
         </map>
     </xsl:template>
-    
+
+    <!--This template is currently disabled by the mode assignment - bring
+    it back if we wish to start supporting inclusive (not exclusive) 'choice'
+    in JSON Schema - issue 105 -->
     <xsl:template match="define-assembly" mode="old">
         <xsl:apply-templates select="formal-name, description"/>
         <xsl:call-template name="give-id"/>
@@ -160,8 +163,6 @@
        <!--split out model into newmodels (sans choice)
        if count(newmodels) gt 1 then anyOf / for-each / map
        if count(newmodels eq 0 then map with properties-->
-       
-       
    </xsl:template>
    
    <xsl:import href="choice-split.xsl"/>
@@ -261,8 +262,6 @@
             </number>
     </xsl:template>
     
-    
-    
     <!-- no flags means no properties; but it could be a string or scalar type not an object -->
     <xsl:template priority="2" match="define-field[empty(flag[not(@name=../json-key/@flag-ref)] | define-flag[not(@name=../json-key/@flag-ref)] )]">
             <xsl:apply-templates select="formal-name, description"/>
@@ -278,6 +277,7 @@
         </xsl:variable>
         <xsl:choose>
             <xsl:when test="exists($enumerations) and $decl/constraint/allowed-values/@allow-other = 'yes' and (constraint/allowed-values/@target = '.' or empty(constraint/allowed-values/@target))">
+               <!-- does this anyOf make sense? cf oscal-cli handling -->
                 <array key="anyOf">
                     <map>
                         <xsl:apply-templates select="." mode="object-type"/>
