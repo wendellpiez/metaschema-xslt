@@ -25,7 +25,7 @@
                <a/>
                <b/>
                <choice>
-               <c1/>
+                  <c1/>
                   <c2/>
                </choice>
                <d/>
@@ -194,17 +194,17 @@
       </x:scenario>
       <x:scenario label="Nested choices" pending="aren't actually permitted (thankfully)">
          <x:context select="/*" mode="splitting">
-         <model>
-            <choice>
-               <a1/>
-               <a2/>
+            <model>
                <choice>
-                  <a3a/>
-                  <a3b/>
+                  <a1/>
+                  <a2/>
+                  <choice>
+                     <a3a/>
+                     <a3b/>
+                  </choice>
                </choice>
-            </choice>
-            <b/>
-         </model>
+               <b/>
+            </model>
          </x:context>
          <x:expect label="expands into four (2 x 2)">
             <model>
@@ -223,7 +223,7 @@
                <a3b/>
                <b/>
             </model>
-         </x:expect>            
+         </x:expect>
       </x:scenario>
    </x:scenario>
 </x:description>
