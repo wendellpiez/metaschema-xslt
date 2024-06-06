@@ -56,6 +56,10 @@
       </x:scenario>
    </x:scenario>
 
+    <!--TODO: sketch out some datatype mapping?
+      test out architectur separately from modes?
+    -->  
+      
    <!--<x:scenario label="[C] something normal">
       <x:scenario label="[C.1] The 'sheet' assembly (with a choice)">
          <x:context select="$mx:tiny-composed/*"/>

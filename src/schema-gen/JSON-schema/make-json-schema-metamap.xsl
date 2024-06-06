@@ -175,20 +175,25 @@
       <xsl:call-template name="give-id"/>
       <string key="type">object</string>
       
+      <!-- mode 'splitting' in the imported XSLT returns a sequence of flat models
+           from a model, splitting it into the various (exclusive) options as indicated by its
+           'choice' elements - combinatorially
+           cf XSpec testing/tests/jsonschemagen-mapping-xspec/choice-splitting.xspec -->
       <xsl:variable name="split-models" as="element(model)*">
          <xsl:apply-templates select="model" mode="splitting"/>
       </xsl:variable>
       <xsl:choose>
          <xsl:when test="count($split-models) gt 1">
+            <!-- if more than one model is allowed, we offer the choice here -->
             <array key="anyOf">
                <xsl:for-each select="$split-models">
                   <map>
                      <map key="properties">
                         <xsl:apply-templates mode="define" select="$flags-here"/>
-                        <xsl:apply-templates mode="define" select="."/>
+                        <xsl:apply-templates mode="define" select="self::model"/>
                      </map>
                      <xsl:call-template name="require-or-allow">
-                        <xsl:with-param name="with-model" select="."/>
+                        <xsl:with-param name="with-model" select="self::model"/>
                      </xsl:call-template>
                   </map>
                </xsl:for-each>
@@ -200,24 +205,12 @@
                <xsl:apply-templates mode="define" select="$my-model"/>
             </map>
             <xsl:call-template name="require-or-allow"/>
-            
          </xsl:when>
          <xsl:otherwise>
             <xsl:call-template name="require-or-allow"/>
          </xsl:otherwise>
       </xsl:choose>
-      
-      
-      
-      <!--<xsl:apply-templates mode="define" select="$flags-here"/>
-       <xsl:apply-templates mode="define" select="."/>
-       <xsl:apply-templates mode="define" select="$flags-here"/>
-       
-       model -> flatmodel+
-       for each flatmodel
-       do xsl:apply-templates mode="define" select="flag | define-flag | model"/>-->
    </xsl:template>
-   
    
     
     <xsl:template match="define-field">

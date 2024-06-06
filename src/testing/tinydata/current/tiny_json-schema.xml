@@ -42,7 +42,7 @@
             <map key="stuff">
                <string key="title">Stuff</string>
                <string key="description">Some amount of tiny stuff.</string>
-               <string key="type">string</string>
+               <string key="$ref">#/definitions/MarkupMultilineDatatype</string>
             </map>
             <map key="parts">
                <array key="anyOf">
@@ -83,7 +83,7 @@
          <string key="title">Title</string>
          <string key="description">markup-line example.</string>
          <string key="$id">#/definitions/tiny-tiny:title</string>
-         <string key="type">string</string>
+         <string key="$ref">#/definitions/MarkupLineDatatype</string>
       </map>
       <map key="tiny-tiny:term">
          <string key="title">Term</string>
@@ -110,7 +110,7 @@
          <string key="title">Note</string>
          <string key="description">Wrapped markup-multiline example.</string>
          <string key="$id">#/definitions/tiny-tiny:note</string>
-         <string key="type">string</string>
+         <string key="$ref">#/definitions/MarkupMultilineDatatype</string>
       </map>
       <map key="tiny-tiny:part">
          <string key="title">Tiny part</string>
@@ -138,7 +138,7 @@
             <map key="stuff">
                <string key="title">Stuff</string>
                <string key="description">Some amount of tiny stuff.</string>
-               <string key="type">string</string>
+               <string key="$ref">#/definitions/MarkupMultilineDatatype</string>
             </map>
             <map key="parts">
                <array key="anyOf">
@@ -182,51 +182,81 @@
          <string key="description">A list or grid of data points (items), or an entry (row or line item) in such a list or grid that contains such a list or grid.</string>
          <string key="$id">#/definitions/tiny-tiny:sheet</string>
          <string key="type">object</string>
-         <map key="properties">
-            <map key="key">
-               <string key="title">Field key</string>
-               <string key="description">Distinguishing a sheet or item (field) among siblings or neighbors.</string>
-               <string key="$ref">#/definitions/TokenDatatype</string>
-            </map>
-            <map key="class">
-               <string key="title">Class</string>
-               <string key="description">Class or classes.</string>
-               <string key="$ref">#/definitions/StringDatatype</string>
-            </map>
-            <map key="title">
-               <string key="$ref">#/definitions/tiny-tiny:title</string>
-            </map>
-            <map key="stuff">
-               <string key="title">Stuff</string>
-               <string key="description">Some amount of tiny stuff.</string>
-               <string key="type">string</string>
-            </map>
-            <map key="sheets">
-               <string key="type">array</string>
-               <number key="minItems">1</number>
-               <map key="items">
-                  <string key="$ref">#/definitions/tiny-tiny:sheet</string>
-               </map>
-            </map>
-            <map key="items">
-               <array key="anyOf">
-                  <map>
-                     <string key="$ref">#/definitions/tiny-tiny:item</string>
+         <array key="anyOf">
+            <map>
+               <map key="properties">
+                  <map key="key">
+                     <string key="title">Field key</string>
+                     <string key="description">Distinguishing a sheet or item (field) among siblings or neighbors.</string>
+                     <string key="$ref">#/definitions/TokenDatatype</string>
                   </map>
-                  <map>
+                  <map key="class">
+                     <string key="title">Class</string>
+                     <string key="description">Class or classes.</string>
+                     <string key="$ref">#/definitions/StringDatatype</string>
+                  </map>
+                  <map key="title">
+                     <string key="$ref">#/definitions/tiny-tiny:title</string>
+                  </map>
+                  <map key="stuff">
+                     <string key="title">Stuff</string>
+                     <string key="description">Some amount of tiny stuff.</string>
+                     <string key="$ref">#/definitions/MarkupMultilineDatatype</string>
+                  </map>
+                  <map key="sheets">
                      <string key="type">array</string>
                      <number key="minItems">1</number>
                      <map key="items">
-                        <string key="$ref">#/definitions/tiny-tiny:item</string>
+                        <string key="$ref">#/definitions/tiny-tiny:sheet</string>
                      </map>
                   </map>
-               </array>
+                  <map key="note">
+                     <string key="$ref">#/definitions/tiny-tiny:note</string>
+                  </map>
+               </map>
+               <boolean key="additionalProperties">false</boolean>
             </map>
-            <map key="note">
-               <string key="$ref">#/definitions/tiny-tiny:note</string>
+            <map>
+               <map key="properties">
+                  <map key="key">
+                     <string key="title">Field key</string>
+                     <string key="description">Distinguishing a sheet or item (field) among siblings or neighbors.</string>
+                     <string key="$ref">#/definitions/TokenDatatype</string>
+                  </map>
+                  <map key="class">
+                     <string key="title">Class</string>
+                     <string key="description">Class or classes.</string>
+                     <string key="$ref">#/definitions/StringDatatype</string>
+                  </map>
+                  <map key="title">
+                     <string key="$ref">#/definitions/tiny-tiny:title</string>
+                  </map>
+                  <map key="stuff">
+                     <string key="title">Stuff</string>
+                     <string key="description">Some amount of tiny stuff.</string>
+                     <string key="$ref">#/definitions/MarkupMultilineDatatype</string>
+                  </map>
+                  <map key="items">
+                     <array key="anyOf">
+                        <map>
+                           <string key="$ref">#/definitions/tiny-tiny:item</string>
+                        </map>
+                        <map>
+                           <string key="type">array</string>
+                           <number key="minItems">1</number>
+                           <map key="items">
+                              <string key="$ref">#/definitions/tiny-tiny:item</string>
+                           </map>
+                        </map>
+                     </array>
+                  </map>
+                  <map key="note">
+                     <string key="$ref">#/definitions/tiny-tiny:note</string>
+                  </map>
+               </map>
+               <boolean key="additionalProperties">false</boolean>
             </map>
-         </map>
-         <boolean key="additionalProperties">false</boolean>
+         </array>
       </map>
       <map key="tiny-tiny:item">
          <string key="title">Line item</string>
@@ -247,10 +277,10 @@
             <map key="n">
                <string key="title">N (position)</string>
                <string key="description">An indexed position (distinctive among values of parent::*/*/@n).</string>
-               <string key="$ref">#/definitions/NonNegativeIntegerDatatype NonNegativeIntegerDatatype</string>
+               <string key="$ref">#/definitions/NonNegativeIntegerDatatype</string>
             </map>
             <map key="RICHTEXT">
-               <string key="type">object</string>
+               <string key="$ref">#/definitions/MarkupLineDatatype</string>
             </map>
          </map>
          <array key="required">
@@ -261,6 +291,16 @@
       <map key="IntegerDatatype">
          <string key="description">A whole number value.</string>
          <string key="type">integer</string>
+      </map>
+      <map key="MarkupLineDatatype">
+         <string key="description">A single line of Markdown content conformant to the Commonmark specification.</string>
+         <string key="type">string</string>
+         <string key="pattern">^[^
+]+$</string>
+      </map>
+      <map key="MarkupMultilineDatatype">
+         <string key="description">A multiple lines of Markdown content conformant to the Commonmark specification.</string>
+         <string key="type">string</string>
       </map>
       <map key="NonNegativeIntegerDatatype">
          <string key="description">An integer value that is equal to or greater than 0.</string>

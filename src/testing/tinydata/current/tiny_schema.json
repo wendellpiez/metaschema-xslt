@@ -33,7 +33,7 @@
      "stuff" : 
      { "title" : "Stuff",
       "description" : "Some amount of tiny stuff.",
-      "type" : "string" },
+      "$ref" : "#/definitions/MarkupMultilineDatatype" },
      "parts" : 
      { "anyOf" : 
       [ 
@@ -60,7 +60,7 @@
    { "title" : "Title",
     "description" : "markup-line example.",
     "$id" : "#/definitions/tiny-tiny:title",
-    "type" : "string" },
+    "$ref" : "#/definitions/MarkupLineDatatype" },
    "tiny-tiny:term" : 
    { "title" : "Term",
     "description" : "Simple string value example.",
@@ -81,7 +81,7 @@
    { "title" : "Note",
     "description" : "Wrapped markup-multiline example.",
     "$id" : "#/definitions/tiny-tiny:note",
-    "type" : "string" },
+    "$ref" : "#/definitions/MarkupMultilineDatatype" },
    "tiny-tiny:part" : 
    { "title" : "Tiny part",
     "description" : "A bit of tiny data.",
@@ -102,7 +102,7 @@
      "stuff" : 
      { "title" : "Stuff",
       "description" : "Some amount of tiny stuff.",
-      "type" : "string" },
+      "$ref" : "#/definitions/MarkupMultilineDatatype" },
      "parts" : 
      { "anyOf" : 
       [ 
@@ -131,38 +131,59 @@
     "description" : "A list or grid of data points (items), or an entry (row or line item) in such a list or grid that contains such a list or grid.",
     "$id" : "#/definitions/tiny-tiny:sheet",
     "type" : "object",
-    "properties" : 
-    { "key" : 
-     { "title" : "Field key",
-      "description" : "Distinguishing a sheet or item (field) among siblings or neighbors.",
-      "$ref" : "#/definitions/TokenDatatype" },
-     "class" : 
-     { "title" : "Class",
-      "description" : "Class or classes.",
-      "$ref" : "#/definitions/StringDatatype" },
-     "title" : 
-     { "$ref" : "#/definitions/tiny-tiny:title" },
-     "stuff" : 
-     { "title" : "Stuff",
-      "description" : "Some amount of tiny stuff.",
-      "type" : "string" },
-     "sheets" : 
-     { "type" : "array",
-      "minItems" : 1,
-      "items" : 
-      { "$ref" : "#/definitions/tiny-tiny:sheet" } },
-     "items" : 
-     { "anyOf" : 
-      [ 
-       { "$ref" : "#/definitions/tiny-tiny:item" },
-       
+    "anyOf" : 
+    [ 
+     { "properties" : 
+      { "key" : 
+       { "title" : "Field key",
+        "description" : "Distinguishing a sheet or item (field) among siblings or neighbors.",
+        "$ref" : "#/definitions/TokenDatatype" },
+       "class" : 
+       { "title" : "Class",
+        "description" : "Class or classes.",
+        "$ref" : "#/definitions/StringDatatype" },
+       "title" : 
+       { "$ref" : "#/definitions/tiny-tiny:title" },
+       "stuff" : 
+       { "title" : "Stuff",
+        "description" : "Some amount of tiny stuff.",
+        "$ref" : "#/definitions/MarkupMultilineDatatype" },
+       "sheets" : 
        { "type" : "array",
         "minItems" : 1,
         "items" : 
-        { "$ref" : "#/definitions/tiny-tiny:item" } } ] },
-     "note" : 
-     { "$ref" : "#/definitions/tiny-tiny:note" } },
-    "additionalProperties" : false },
+        { "$ref" : "#/definitions/tiny-tiny:sheet" } },
+       "note" : 
+       { "$ref" : "#/definitions/tiny-tiny:note" } },
+      "additionalProperties" : false },
+     
+     { "properties" : 
+      { "key" : 
+       { "title" : "Field key",
+        "description" : "Distinguishing a sheet or item (field) among siblings or neighbors.",
+        "$ref" : "#/definitions/TokenDatatype" },
+       "class" : 
+       { "title" : "Class",
+        "description" : "Class or classes.",
+        "$ref" : "#/definitions/StringDatatype" },
+       "title" : 
+       { "$ref" : "#/definitions/tiny-tiny:title" },
+       "stuff" : 
+       { "title" : "Stuff",
+        "description" : "Some amount of tiny stuff.",
+        "$ref" : "#/definitions/MarkupMultilineDatatype" },
+       "items" : 
+       { "anyOf" : 
+        [ 
+         { "$ref" : "#/definitions/tiny-tiny:item" },
+         
+         { "type" : "array",
+          "minItems" : 1,
+          "items" : 
+          { "$ref" : "#/definitions/tiny-tiny:item" } } ] },
+       "note" : 
+       { "$ref" : "#/definitions/tiny-tiny:note" } },
+      "additionalProperties" : false } ] },
    "tiny-tiny:item" : 
    { "title" : "Line item",
     "description" : "A value, potentially marked with @key or @class.",
@@ -180,15 +201,22 @@
      "n" : 
      { "title" : "N (position)",
       "description" : "An indexed position (distinctive among values of parent::*/*/@n).",
-      "$ref" : "#/definitions/NonNegativeIntegerDatatype NonNegativeIntegerDatatype" },
+      "$ref" : "#/definitions/NonNegativeIntegerDatatype" },
      "RICHTEXT" : 
-     { "type" : "object" } },
+     { "$ref" : "#/definitions/MarkupLineDatatype" } },
     "required" : 
     [ "RICHTEXT" ],
     "additionalProperties" : false },
    "IntegerDatatype" : 
    { "description" : "A whole number value.",
     "type" : "integer" },
+   "MarkupLineDatatype" : 
+   { "description" : "A single line of Markdown content conformant to the Commonmark specification.",
+    "type" : "string",
+    "pattern" : "^[^\n]+$" },
+   "MarkupMultilineDatatype" : 
+   { "description" : "A multiple lines of Markdown content conformant to the Commonmark specification.",
+    "type" : "string" },
    "NonNegativeIntegerDatatype" : 
    { "description" : "An integer value that is equal to or greater than 0.",
     "allOf" : 
