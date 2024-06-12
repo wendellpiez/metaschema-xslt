@@ -19,6 +19,8 @@ folder=.
 .PHONY: test
 test: unit-test ## Run all tests
 
+# just unit-test for now ...
+
 .PHONY: unit-test
 unit-test: ## Run all *.xspec in testing folder (and subfolders)
 	LOGFILE="$(output_folder)/composition-xspec.log" $(xspec_ci_script) \
@@ -30,10 +32,10 @@ unit-test: ## Run all *.xspec in testing folder (and subfolders)
 
 .PHONY: xspec
 xspec: ## Run all *.xspec in a designated folder, quietly - use folder=[folder]
-	LOGFILE="$(output_folder)/$(folder)-xspec-tests.log" $(xspec_script) \
+	LOGFILE="$(output_folder)/xspec-tests.log" $(xspec_script) \
 		"baseURI=file:$(module_path)/" \
 		"folder=$(folder)" \
-		"report-to=$(output_folder)/inspector-$(folder)-tests_report.html" \
+		"report-to=$(output_folder)" \
 		"stop-on-error=no" \
 		"recurse=yes"
 
