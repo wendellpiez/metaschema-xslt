@@ -14,6 +14,12 @@
       <p>When a data set or document is known or knowable as valid, it becomes possible to make with confidence a large set of assertions regarding its contents, based on information known from the metaschema. Essentially it converts the problem of interpreting the document contents from an <q>open world</q> to a <q>closed world</q> problem, by defining structures and boundaries for the information space into which data can be projected and declaring as <q>out of bounds</q> anything that is likely to pose problems because not well defined, or defined at all.</p>
    </part>
    <part>
+   <title>module</title>
+   <term id="module">module</term>   
+   <p>A Metaschema module represents implementations of the individual information elements of the information model using <a href="https://pages.nist.gov/metaschema/specification/glossary/#definition">definitions</a></p>.
+   <p>A module is synonym for a metaschema as defined above.</p>
+   </part>   
+   <part>
       <title>Assembly</title>
       <term id="assembly">assembly</term>
       <p>An assembly is a complex object defined in a metaschema. Its properties include a name (identifier); a name in use (a tag to be used in data); and a model, including both permitted flags(appearing one each at most), assemblies, and fields (potentially appearing in multiples).</p>
